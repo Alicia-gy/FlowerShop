@@ -4,7 +4,7 @@ import flowershop.domain.Product;
 
 public class FactorySelecter {
 
-    //TODO configure with classes
+    //TODO configure with classes, add import
 
     public Product createProductWithFactory(ProductType productType) {
         switch(ProductType) {

@@ -5,8 +5,10 @@ public abstract class Product {
 
 	private String name;
 	private double price;
+	//TODO rename a quantity
 	private int amount;
 	private int id;
+	//TODO rename a nextId
 	private static int idSiguiente = 1;
 
 	public Product(String name, double price, int amount) {
@@ -56,7 +58,5 @@ public abstract class Product {
 		return "Product [name=" + this.name + ", price=" + this.price + ", amount " 
 				+ this.amount + ", id=" + this.id + "]";
 	}
-
-	
-
+	//TODO add serializable
 }
