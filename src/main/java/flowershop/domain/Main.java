@@ -2,8 +2,9 @@ package flowershop.domain;
 
 import flowershop.enums.Colours;
 import flowershop.enums.Materials;
-
+//TODO remove from final version
 public class Main {
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

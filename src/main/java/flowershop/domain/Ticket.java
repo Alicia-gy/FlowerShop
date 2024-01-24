@@ -6,11 +6,14 @@ import java.util.HashMap;
 
 public class Ticket {
 
+	//TODO esperar a tests para saber si funciona
 	private int id;
+	//TODO rename a nextID
 	private int idSiguiente = 1;
 	private double totalPrice;
 	private int totalProducts;
 	private Date saleDate;
+	//TODO rename ej: soldProducts
 	private HashMap<Product, Integer> tickets;
 
 	public Ticket() {
@@ -24,6 +27,7 @@ public class Ticket {
 
 	}
 
+	//TODO prestar atencion a la necesidad de setters
 	public int getId() {
 		return id;
 	}

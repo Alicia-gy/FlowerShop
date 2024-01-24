@@ -1,7 +1,7 @@
 package flowershop.domain;
 
 public class Tree extends Product {
-
+	//TODO delete duplicated atributes
 	private String name;
 	private double price;
 	private double height;
@@ -29,5 +29,5 @@ public class Tree extends Product {
 				", height=" + this.height + ", Id: " + super.getId() + "]";
 	}
 
-
+	//TODO add serializable
 }
