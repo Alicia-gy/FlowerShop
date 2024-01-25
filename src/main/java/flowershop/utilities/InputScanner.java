@@ -23,6 +23,11 @@ public class InputScanner {
         return scan.nextByte();
     }
 
+    public static double askDouble(String message) {
+        System.out.println(message);
+        return scan.nextDouble();
+    }
+
 }
 
 
