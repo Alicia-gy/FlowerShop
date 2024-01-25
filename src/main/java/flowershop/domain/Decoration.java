@@ -4,7 +4,7 @@ import flowershop.enums.Materials;
 
 public class Decoration extends Product {
 
-
+	//TODO delete duplicated atributes
 	private String name;
 	private double price;
 	private Materials material;
@@ -33,5 +33,5 @@ public class Decoration extends Product {
 	}
 
 
-
+	//TODO add serializable
 }

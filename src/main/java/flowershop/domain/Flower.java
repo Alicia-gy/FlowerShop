@@ -3,7 +3,8 @@ package flowershop.domain;
 import flowershop.enums.Colours;
 
 public class Flower extends Product{
-	
+
+	//TODO delete duplicated atributes
 	private int amount;
 	private String name;
 	private double price;
@@ -31,5 +32,5 @@ public class Flower extends Product{
 	+ super.getPrice() + ", cantidad=" + super.getAmount()
 	+ ", color=" + this.getColours() + ", Id: " + super.getId() + "]";
 	}
-
+	//TODO add serializable
 }
