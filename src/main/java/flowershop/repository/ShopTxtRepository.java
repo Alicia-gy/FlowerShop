@@ -1,6 +1,8 @@
 package flowershop.repository;
 
-import flowershop.domain.Product;
+import flowershop.domain.*;
+import flowershop.enums.Colours;
+import flowershop.enums.Materials;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import flowershop.enums.ProductType;
+import flowershop.service.impl.Serialize;
+
 public class ShopTxtRepository implements iShopRepository {
 
     private final File file;
@@ -18,14 +23,6 @@ public class ShopTxtRepository implements iShopRepository {
         this.file = file;
     }
 
-    private String serialize(Product product) {
-        return product.getId() + '\0' + product.getNombre();
-    }
-
-    private Product deserialize(String data) {
-        String[] parts = data.split("\0", 2);
-        return new Product(Long.parseLong(parts[0]), parts[1]);
-    }
 
     @Override
     public void insert(Product product) {
@@ -33,7 +30,7 @@ public class ShopTxtRepository implements iShopRepository {
         //No necesito cerrar porque lo hace el try (try with resources)
         file.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(file, true)) {
-            writer.append(serialize(product));
+            writer.append(Serialize.serialize(product));
             writer.append("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -53,7 +50,7 @@ public class ShopTxtRepository implements iShopRepository {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll(ProductType productType) {
         List<Product> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
             while(reader.hasNextLine()){
