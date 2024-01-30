@@ -13,7 +13,8 @@ public class Ticket {
 	private double totalPrice;
 	private int totalProducts;
 	private Date saleDate;
-	//TODO rename ej: soldProducts
+	//TODO rename ej: soldProducts, Ezequiel necesita un constructor con parametros para usar en la base de datos
+	//ej: Ticket(Hashmap map, double totalPrice, int totalProducts, Date saleDate)
 	private HashMap<Product, Integer> tickets;
 
 	public Ticket() {
@@ -25,6 +26,14 @@ public class Ticket {
 		id = idSiguiente;
 		idSiguiente++;
 
+	}
+
+	public Ticket(int id, double totalPrice, int totalProducts, Date saleDate, HashMap<Product, Integer> tickets){
+		this.id = id;
+		this.totalPrice = totalPrice;
+		this.totalProducts = totalProducts;
+		this.saleDate = saleDate;
+		this.tickets = tickets;
 	}
 
 	//TODO prestar atencion a la necesidad de setters
