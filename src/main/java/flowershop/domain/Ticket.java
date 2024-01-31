@@ -25,7 +25,6 @@ public class Ticket {
 		this.totalProducts = 0;
 		id = idSiguiente;
 		idSiguiente++;
-
 	}
 
 	public Ticket(int id, double totalPrice, int totalProducts, Date saleDate, HashMap<Product, Integer> tickets){

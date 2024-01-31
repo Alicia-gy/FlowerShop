@@ -3,8 +3,6 @@ package flowershop.service.impl;
 import flowershop.domain.*;
 import flowershop.enums.Colours;
 import flowershop.enums.Materials;
-import flowershop.enums.ProductType;
-import flowershop.factories.FactorySelecter;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -35,45 +33,33 @@ public class Serialize {
                 String.valueOf(ticket.getTotalPrice()) + '\0' + ticket.getSaleDate();
     }
 
-    private Product deserialize(String data) {
+    public static Product deserialize(String data) {
         String[] parts = data.split("\0", 6);
-        if(ticket)
-        {}
-        else {return FactorySelecter();}
-    }
-
-    public static Tree deserializeTree(String data) {
-        String[] parts = data.split("\0", 5);
-        return new Tree(parts[1], Double.parseDouble(parts[2]),
-                Double.parseDouble(parts[3]), Integer.parseInt(parts[4]));
-    }
-
-    public static Flower deserializeFlower(String data) {
-        String[] parts = data.split("\0", 5);
-        return new Flower(parts[1], Double.parseDouble(parts[2]),
-                Integer.parseInt(parts[3]), Colours.valueOf(parts[4]));
-    }
-
-    public static Decoration deserializeDecoration(String data) {
-        String[] parts = data.split("\0", 5);
-        return new Decoration(parts[1], Double.parseDouble(parts[2]),
-                Integer.parseInt(parts[3]), Materials.valueOf(parts[4]));
+        if(parts[0].contentEquals("TREE")) {
+            return new Tree(Integer.parseInt(parts[1]), parts[2], Double.parseDouble(parts[3]),
+                    Integer.parseInt(parts[4]), Double.parseDouble(parts[5]));
+        }else if(parts[0].contentEquals("FLOWER")) {
+            return new Flower(Integer.parseInt(parts[1]), parts[2], Double.parseDouble(parts[3]),
+                    Integer.parseInt(parts[4]), Colours.valueOf(parts[5]));
+        }else if(parts[0].contentEquals("DECORATION")) {
+            return new Decoration(Integer.parseInt(parts[1]), parts[2], Double.parseDouble(parts[3]),
+                    Integer.parseInt(parts[4]), Materials.valueOf(parts[5]));
+        }
+        return null;
     }
 
     public static Ticket deserializeTicket(String data) {
-        String[] parts = data.split("\0", 5);
-        String[] hash = parts[5].split(", ");
+        String[] parts = data.split("\0", 6);
+        String[] hash = parts[6].split(", ");
         HashMap<Product, Integer> map = new HashMap<>();
         for(int i = 0; i < hash.length; i++) {
             String[] hm = hash[i].split("=");
-            String[] prod = hm[0].split("\0", 5);
-            //TODO ver como decirle a la fabrica que tipo de producto le entra
-            Product product = FactorySelecter.createProductWithFactory(parts[0]);
+            Product product = deserialize(hm[0]);
             map.put(product, Integer.valueOf(hm[1]));
         }
 
-        return new Ticket(Integer.valueOf(parts[0]), Double.parseDouble(parts[1]), Integer.parseInt(parts[2]),
-                Date.valueOf(parts[3]), map);
+        return new Ticket(Integer.valueOf(parts[1]), Double.parseDouble(parts[2]), Integer.parseInt(parts[3]),
+                Date.valueOf(parts[4]), map);
     }
 
     public static String serialize(HashMap<Product, Integer> map){
