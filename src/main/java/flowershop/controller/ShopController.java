@@ -1,46 +1,79 @@
 package flowershop.controller;
 
-import flowershop.utilities.InputScanner;
+import flowershop.domain.Product;
+import flowershop.domain.Ticket;
+import flowershop.factories.FactorySelecter;
+import flowershop.repository.iShopRepository;
+import flowershop.utilities.TypeSelecter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShopController {
 
-    //TODO add methods
+    private final iShopRepository shopRepository;
 
-    public static void menu() {
-        boolean exit = false;
-
-        while (!exit) {
-            switch (InputScanner.askByte(showMenuOptions())) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                default:
-                    exit = true;
-                    break;
-            }
-        }
+    public ShopController(iShopRepository shopRepository) {
+        this.shopRepository = shopRepository;
     }
 
-    static String showMenuOptions() {
-        return "1- Add product /n" +
-                "2- Retire product /n" +
-                "3- Show stock /n" +
-                "4- Show total stock value /n" +
-                "5- Create ticket /n" +
-                "6- Show sales history /n" +
-                "7- Show total sales value /n" +
-                "8- Exit application";
+
+
+    public void addProduct() {
+        shopRepository.insert(FactorySelecter
+                .createProductWithFactory(TypeSelecter.askProductType()));
+    }
+
+    public void retireProduct() {
+        shopRepository.delete(FactorySelecter
+                .createProductWithFactory(TypeSelecter.askProductType()));
+    }
+
+    public void showStock() {
+        List<Product> products = shopRepository.findAllProducts();
+
+        String toShow = products.stream()
+                .map(Product::toString)
+                .collect(Collectors.joining("/n"));
+
+        System.out.println(toShow);
+    }
+
+    public double getStockValue() {
+        List<Product> products = shopRepository.findAllProducts();
+        double totalValue = 0;
+
+        for(Product product:products){
+            totalValue +=
+                    (product.getPrice() * product.getAmount());
+        }
+
+        return totalValue;
+    }
+
+    //TODO create method
+    public void createTicket() {
+    }
+
+    public void showTickets() {
+        List<Ticket> tickets = shopRepository.findAllTickets();
+
+        String toShow = tickets.stream()
+                .map(Ticket::toString)
+                .collect(Collectors.joining("/n"));
+
+        System.out.println(toShow);
+    }
+
+    public double getTotalTicketValue() {
+        List<Ticket> tickets = shopRepository.findAllTickets();
+        double totalValue = 0;
+
+        for(Ticket ticket:tickets){
+            totalValue += ticket.getTotalPrice();
+        }
+
+        return totalValue;
     }
 
 }
