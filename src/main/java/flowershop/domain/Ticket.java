@@ -53,6 +53,10 @@ public class Ticket {
 		return saleDate;
 	}
 
+	public HashMap<Product, Integer> getTickets() {
+		return tickets;
+	}
+
 	@Override
 	public String toString() {
 		return "Ticket [id=" + this.id + ", totalPrice=" + this.totalPrice + ", totalProducts=" + this.totalProducts

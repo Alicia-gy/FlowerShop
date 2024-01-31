@@ -30,7 +30,7 @@ public class Serialize {
 
     public static String serialize(Ticket ticket){
         return "TICKET\0" + ticket.getId() + '\0' + ticket.getTotalProducts() + '\0' +
-                String.valueOf(ticket.getTotalPrice()) + '\0' + ticket.getSaleDate();
+                String.valueOf(ticket.getTotalPrice()) + '\0' + ticket.getSaleDate()  + '\0' + serialize(ticket.getTickets());
     }
 
     public static Product deserialize(String data) {
