@@ -1,8 +1,7 @@
 package flowershop.repository;
 
-import flowershop.domain.*;
-import flowershop.enums.Colours;
-import flowershop.enums.Materials;
+import flowershop.domain.Product;
+import flowershop.service.impl.Serialize;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,8 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import flowershop.enums.ProductType;
-import flowershop.service.impl.Serialize;
+import static flowershop.service.impl.Serialize.deserialize;
 
 public class ShopTxtRepository implements iShopRepository {
 
@@ -50,7 +48,7 @@ public class ShopTxtRepository implements iShopRepository {
     }
 
     @Override
-    public List<Product> findAll(ProductType productType) {
+    public List<Product> findAll() {
         List<Product> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
             while(reader.hasNextLine()){

@@ -3,19 +3,19 @@ package flowershop.domain;
 import flowershop.enums.Materials;
 
 public class Decoration extends Product {
-
-	//TODO delete duplicated atributes
-	private String name;
-	private double price;
 	private Materials material;
-	private int amount;
 	
 	public Decoration(String name,double price,int amount,Materials material) {
 		super(name,price,amount);
 		
 		this.material = material;
 	}
-	
+
+	public Decoration(int id, String name, double price, int amount, Materials material) {
+		super(id, name, price, amount);
+		this.material = material;
+	}
+
 	public Materials getMaterial() {
 		return material;
 	}
