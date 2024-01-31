@@ -1,6 +1,7 @@
 package flowershop.repository;
 
 import flowershop.domain.Product;
+import flowershop.domain.Ticket;
 import flowershop.service.impl.Serialize;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import static flowershop.service.impl.Serialize.deserialize;
+import static flowershop.service.impl.Serialize.deserializeTicket;
 
 public class ShopTxtRepository implements iShopRepository {
 
@@ -37,7 +39,7 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public void delete(Product product) {
-        Iterator<Product> it = findAll().iterator();
+        Iterator<Product> it = findAllProducts().iterator();
         file.delete();
         while (it.hasNext()){
             Product anotherProd = it.next();
@@ -46,13 +48,25 @@ public class ShopTxtRepository implements iShopRepository {
             }
         }
     }
-
+    
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAllProducts() {
         List<Product> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
             while(reader.hasNextLine()){
                 products.add(deserialize(reader.nextLine()));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
+    public List<Ticket> findAllTickets() {
+        List<Ticket> products = new ArrayList<>();
+        try(Scanner reader = new Scanner(file)){
+            while(reader.hasNextLine()){
+                products.add(deserializeTicket(reader.nextLine()));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -77,7 +91,7 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public void update(Product product) {
-        Iterator<Product> it = findAll().iterator();
+        Iterator<Product> it = findAllProducts().iterator();
         file.delete();
         while (it.hasNext()){
             Product anotherProd = it.next();
