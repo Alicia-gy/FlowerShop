@@ -38,6 +38,17 @@ public class ShopTxtRepository implements iShopRepository {
     }
 
     @Override
+    public void insertTicket(Ticket ticket) {
+        file.getParentFile().mkdirs();
+        try (FileWriter writer = new FileWriter(file, true)) {
+            writer.append(Serialize.serialize(ticket));
+            writer.append("\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void delete(Product product) {
         Iterator<Product> it = findAllProducts().iterator();
         file.delete();
@@ -48,7 +59,7 @@ public class ShopTxtRepository implements iShopRepository {
             }
         }
     }
-    
+
     @Override
     public List<Product> findAllProducts() {
         List<Product> products = new ArrayList<>();
