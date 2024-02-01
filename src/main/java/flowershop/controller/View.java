@@ -30,7 +30,8 @@ public class View {
                     System.out.println("Total Stock Value: /n"
                             + shopController.getStockValue());
                     break;
-                case 5: //TODO add ticket method when created
+                case 5:
+                    shopController.createTicket();
                     break;
                 case 6:
                     shopController.showTickets();
