@@ -7,6 +7,7 @@ import flowershop.repository.iShopRepository;
 import flowershop.utilities.TypeSelecter;
 
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class ShopController {
@@ -51,8 +52,26 @@ public class ShopController {
         return totalValue;
     }
 
-    //TODO create method
     public void createTicket() {
+        Ticket ticket = new Ticket();
+        List<Product> products = shopRepository.findAllProducts();
+        Scanner scanner = new Scanner(System.in);
+        Boolean breaker = true;
+        while (breaker) {
+            System.out.println("Select the number of the item wanted: ");
+            for (int i = 0; i < products.size(); i++) {
+                System.out.println(i + 1 + "- " + products.get(i).toString());
+            }
+            Product product = products.get(scanner.nextInt());
+            scanner.nextLine();
+            System.out.println("Select quantity of same product: ");
+            int quantity = scanner.nextInt();
+            scanner.nextLine();
+            ticket.addProduct(product, quantity);
+            System.out.println("If don't want to add more items, press \"Y\", anything else to continue: ");
+            breaker = scanner.nextLine().equals("Y");
+        }
+        shopRepository.insertTicket(ticket);
     }
 
     public void showTickets() {

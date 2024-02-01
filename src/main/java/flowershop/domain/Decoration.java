@@ -32,6 +32,4 @@ public class Decoration extends Product {
 		+ ", amount=" + super.getAmount() +  ", Id: " + super.getId() + "]";
 	}
 
-
-	//TODO add serializable
 }

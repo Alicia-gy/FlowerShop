@@ -8,13 +8,10 @@ public class Ticket {
 
 	//TODO esperar a tests para saber si funciona
 	private int id;
-	//TODO rename a nextID
-	private int idSiguiente = 1;
+	private int nextId = 1;
 	private double totalPrice;
 	private int totalProducts;
 	private Date saleDate;
-	//TODO rename ej: soldProducts, Ezequiel necesita un constructor con parametros para usar en la base de datos
-	//ej: Ticket(Hashmap map, double totalPrice, int totalProducts, Date saleDate)
 	private HashMap<Product, Integer> tickets;
 
 	public Ticket() {
@@ -23,8 +20,8 @@ public class Ticket {
 		this.saleDate= new GregorianCalendar().getTime();
 		this.totalPrice = 0;
 		this.totalProducts = 0;
-		id = idSiguiente;
-		idSiguiente++;
+		id = nextId;
+		nextId++;
 	}
 
 	public Ticket(int id, double totalPrice, int totalProducts, Date saleDate, HashMap<Product, Integer> tickets){
@@ -35,7 +32,6 @@ public class Ticket {
 		this.tickets = tickets;
 	}
 
-	//TODO prestar atencion a la necesidad de setters
 	public int getId() {
 		return id;
 	}
