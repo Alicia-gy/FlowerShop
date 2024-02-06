@@ -64,9 +64,9 @@ public class ShopController {
         return totalValue;
     }
 
-    //TODO deberia eliminar del stock los añadidos al ticket y controlar no vender mas de lo que hay en stock
     public void createTicket() {
         Ticket ticket = new Ticket();
+        ticket.setId(calculateNextTicketId());
         List<Product> products = shopRepository.findAllProducts();
         Scanner scanner = new Scanner(System.in);
         Boolean breaker = true;
@@ -81,13 +81,14 @@ public class ShopController {
             int quantity = scanner.nextInt();
             scanner.nextLine();
             ticket.addProduct(product, quantity);
-            System.out.println("If don't want to add more items, press \"Y\", anything else to continue: ");
-            breaker = scanner.nextLine().equals("Y");
+            System.out.println("If want to add more items, press \"Y\", anything else to continue: ");
+            breaker = scanner.nextLine().toUpperCase().equals("Y");
         }
         shopRepository.insertTicket(ticket);
+        ticket.getTickets().keySet().forEach(shopRepository::update);
     }
 
-    public void showTickets() {
+    /*public void showTickets() {
         List<Ticket> tickets = shopRepository.findAllTickets();
 
         String toShow = tickets.stream()
@@ -95,9 +96,14 @@ public class ShopController {
                 .collect(Collectors.joining("\n"));
 
         System.out.println(toShow);
+    }*/
+    public void showTickets(){
+        for (String text : shopRepository.findAllTickets()){
+            System.out.println(text);
+        }
     }
 
-    public double getTotalTicketValue() {
+    /*public double getTotalTicketValue() {
         List<Ticket> tickets = shopRepository.findAllTickets();
         double totalValue = 0;
 
@@ -106,5 +112,25 @@ public class ShopController {
         }
 
         return totalValue;
+    }*/
+
+    public double getTotalTicketValue(){
+        double totalValue = 0;
+
+        for (String text : shopRepository.findAllTickets()){
+            String[] parts = text.split("\t", 5);
+            totalValue += Double.parseDouble(parts[2]);
+        }
+
+        return totalValue;
+    }
+
+    private int calculateNextTicketId(){
+        int max = 0;
+        for (String data : shopRepository.findAllTickets()){
+            String[] info = data.split("\t");
+            max = Math.max(max, Integer.parseInt(info[0]));
+        }
+        return max + 1;
     }
 }

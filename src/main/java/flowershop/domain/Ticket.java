@@ -56,13 +56,22 @@ public class Ticket {
 				+ ", saleDate=" + this.saleDate + "]";
 
 	}
-	
-	public void addProduct(Product p, int cantidad) {
 
-		this.tickets.put(p, cantidad);
-		this.totalProducts += cantidad;
-		this.totalPrice += p.getPrice()* cantidad;
-
+	public void setId(int id) {
+		this.id = id;
 	}
 
+	public void addProduct(Product p, int cantidad) {
+		if (p.getAmount() >= cantidad) {
+			this.tickets.put(p, cantidad);
+			this.totalProducts += cantidad;
+			this.totalPrice += p.getPrice() * cantidad;
+			p.setAmount(p.getAmount() - cantidad);
+		} else {
+			this.tickets.put(p, p.getAmount());
+			this.totalProducts += p.getAmount();
+			this.totalPrice += p.getPrice() * p.getAmount();
+			p.setAmount(0);
+		}
+	}
 }

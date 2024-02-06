@@ -4,7 +4,6 @@ import flowershop.domain.*;
 import flowershop.enums.Colours;
 import flowershop.enums.Materials;
 
-import java.sql.Date;
 import java.util.HashMap;
 
 public class Serialize {
@@ -30,8 +29,8 @@ public class Serialize {
     }*/
 
     public static String serialize(Ticket ticket){
-        return "TICKET\t" + ticket.getId() + '\t' + ticket.getTotalProducts() + '\t' +
-                String.valueOf(ticket.getTotalPrice()) + '\t' + ticket.getSaleDate()  + '\t' + serialize(ticket.getTickets());
+        return ticket.getId() + "\t" + ticket.getTotalProducts() + "\t" + String.valueOf(ticket.getTotalPrice())
+                + "\t" + ticket.getSaleDate()  + "\t" + serialize(ticket.getTickets());
     }
 
     public static Product deserialize(String data) {
@@ -49,7 +48,7 @@ public class Serialize {
         return null;
     }
 
-    public static Ticket deserializeTicket(String data) {
+    /*public static Ticket deserializeTicket(String data) {
         String[] parts = data.split("\t", 6);
         String[] hash = parts[5].split(", ");
         HashMap<Product, Integer> map = new HashMap<>();
@@ -61,7 +60,7 @@ public class Serialize {
 
         return new Ticket(Integer.parseInt(parts[1]), Double.parseDouble(parts[3]), Integer.parseInt(parts[2]),
                 new Date(Date.parse(parts[4])), map);
-    }
+    }*/
 
     public static String serialize(HashMap<Product, Integer> map){
         StringBuilder mapAsString = new StringBuilder();
