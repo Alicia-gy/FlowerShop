@@ -21,13 +21,25 @@ public class ShopController {
 
 
     public void addProduct() {
-        shopRepository.insert(FactorySelecter
-                .createProductWithFactory(TypeSelecter.askProductType()));
+        try {
+            shopRepository.insert(FactorySelecter
+                    .createProductWithFactory(TypeSelecter.askProductType()));
+            System.out.println("Product added");
+        } catch (IllegalArgumentException | NullPointerException e){
+            System.out.println("Something went wrong, please retry");
+            e.printStackTrace();
+        }
     }
 
     public void retireProduct() {
-        shopRepository.delete(FactorySelecter
-                .createProductWithFactory(TypeSelecter.askProductType()));
+        System.out.println("Pick the id of the product wanted to be removed");
+        for (Product prod : shopRepository.findAllProducts()) {
+            System.out.println(prod.toString());
+        }
+        Scanner scanner = new Scanner(System.in);
+        Product product = shopRepository.findById(scanner.nextLong());
+        scanner.nextLine();
+        shopRepository.delete(product);
     }
 
     public void showStock() {
@@ -35,7 +47,7 @@ public class ShopController {
 
         String toShow = products.stream()
                 .map(Product::toString)
-                .collect(Collectors.joining("/n"));
+                .collect(Collectors.joining("\n"));
 
         System.out.println(toShow);
     }
@@ -52,6 +64,7 @@ public class ShopController {
         return totalValue;
     }
 
+    //TODO deberia eliminar del stock los añadidos al ticket y controlar no vender mas de lo que hay en stock
     public void createTicket() {
         Ticket ticket = new Ticket();
         List<Product> products = shopRepository.findAllProducts();
@@ -62,7 +75,7 @@ public class ShopController {
             for (int i = 0; i < products.size(); i++) {
                 System.out.println(i + 1 + "- " + products.get(i).toString());
             }
-            Product product = products.get(scanner.nextInt());
+            Product product = products.get(scanner.nextInt()-1);
             scanner.nextLine();
             System.out.println("Select quantity of same product: ");
             int quantity = scanner.nextInt();
@@ -79,7 +92,7 @@ public class ShopController {
 
         String toShow = tickets.stream()
                 .map(Ticket::toString)
-                .collect(Collectors.joining("/n"));
+                .collect(Collectors.joining("\n"));
 
         System.out.println(toShow);
     }
@@ -94,5 +107,4 @@ public class ShopController {
 
         return totalValue;
     }
-
 }

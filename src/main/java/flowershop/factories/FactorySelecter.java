@@ -7,21 +7,27 @@ public class FactorySelecter {
 
     public static Product createProductWithFactory(ProductType productType) {
         ProductFactory factory = null;
-        try {
+        //try {
             switch (productType) {
                 case ProductType.TREE:
                     factory = new TreeFactory();
+                    break;
                 case ProductType.FLOWER:
                     factory = new FlowerFactory();
+                    break;
                 case ProductType.DECORATION:
                     factory = new DecorationFactory();
+                    break;
+                default:
+                    System.out.println("Not valid product type!");
+                    break;
             }
             return factory.createProduct();
 
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
+        //} catch (Exception ignored) {
+
+        //}
+        //return null;
     }
 }
 

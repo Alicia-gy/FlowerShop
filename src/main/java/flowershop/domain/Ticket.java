@@ -6,9 +6,7 @@ import java.util.HashMap;
 
 public class Ticket {
 
-	//TODO esperar a tests para saber si funciona
 	private int id;
-	private int nextId = 1;
 	private double totalPrice;
 	private int totalProducts;
 	private Date saleDate;
@@ -20,8 +18,7 @@ public class Ticket {
 		this.saleDate= new GregorianCalendar().getTime();
 		this.totalPrice = 0;
 		this.totalProducts = 0;
-		id = nextId;
-		nextId++;
+		this.id = 0;
 	}
 
 	public Ticket(int id, double totalPrice, int totalProducts, Date saleDate, HashMap<Product, Integer> tickets){
