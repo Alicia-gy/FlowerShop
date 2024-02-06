@@ -10,26 +10,26 @@ import java.io.IOException;
 import java.util.*;
 
 import static flowershop.service.impl.Serialize.deserialize;
-import static flowershop.service.impl.Serialize.deserializeTicket;
 
 public class ShopTxtRepository implements iShopRepository {
 
-    private final File file;
+    private final File productFile;
+    private final File ticketFile;
 
-    public ShopTxtRepository(File file) {
-        this.file = file;
+    public ShopTxtRepository(File productFile, File ticketFile) {
+        this.productFile = productFile;
+        this.ticketFile = ticketFile;
     }
-
 
     @Override
     public void insert(Product product) {
         if (product.getId() == 0){
-            product.setId((int) calculateNextId());
+            product.setId((int) calculateNextProductId());
         }
-        //Abro en modo append (añado al final sin sobreescribnir)
+        //Abro en modo append (añado al final sin sobreescribir)
         //no necesito cerrar porque lo hace el try (try with resources)
-        file.getParentFile().mkdirs();
-        try (FileWriter writer = new FileWriter(file, true)) {
+        productFile.getParentFile().mkdirs();
+        try (FileWriter writer = new FileWriter(productFile, true)) {
             writer.append(product.serialize());
             writer.append("\n");
         } catch (IOException e) {
@@ -39,8 +39,8 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public void insertTicket(Ticket ticket) {
-        file.getParentFile().mkdirs();
-        try (FileWriter writer = new FileWriter(file, true)) {
+        ticketFile.getParentFile().mkdirs();
+        try (FileWriter writer = new FileWriter(ticketFile, true)) {
             writer.append(Serialize.serialize(ticket));
             writer.append("\n");
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class ShopTxtRepository implements iShopRepository {
     @Override
     public void delete(Product product) {
         Iterator<Product> it = findAllProducts().iterator();
-        file.delete();
+        productFile.delete();
         while (it.hasNext()){
             Product anotherProd = it.next();
             if (anotherProd.getId() != product.getId()){
@@ -62,11 +62,11 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public List<Product> findAllProducts() {
-        if (!file.exists()){
+        if (!productFile.exists()){
             return Collections.emptyList();
         }
         List<Product> products = new ArrayList<>();
-        try(Scanner reader = new Scanner(file)){
+        try(Scanner reader = new Scanner(productFile)){
             while(reader.hasNextLine()){
                 Product product = deserialize(reader.nextLine());
                 if (product != null){
@@ -79,7 +79,7 @@ public class ShopTxtRepository implements iShopRepository {
         return products;
     }
 
-    public List<Ticket> findAllTickets() {
+    /*public List<Ticket> findAllTickets() {
         List<Ticket> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
             String text = "";
@@ -93,11 +93,22 @@ public class ShopTxtRepository implements iShopRepository {
             throw new RuntimeException(e);
         }
         return products;
+    }*/
+    public List<String> findAllTickets(){
+        List<String> tickets = new ArrayList<>();
+        try(Scanner reader = new Scanner(ticketFile)){
+            while(reader.hasNextLine()){
+                tickets.add(reader.nextLine());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return tickets;
     }
 
     @Override
     public Product findById(long id) {
-        try(Scanner reader = new Scanner(file)){
+        try(Scanner reader = new Scanner(productFile)){
             while(reader.hasNextLine()){
                 Product product = deserialize(reader.nextLine());
                 if (product.getId() == id) {
@@ -113,14 +124,14 @@ public class ShopTxtRepository implements iShopRepository {
     @Override
     public void update(Product product) {
         Iterator<Product> it = findAllProducts().iterator();
-        file.delete();
+        productFile.delete();
         while (it.hasNext()){
             Product anotherProd = it.next();
             insert(anotherProd.getId() == product.getId() ? product : anotherProd);
         }
     }
 
-    private long calculateNextId(){
+    private long calculateNextProductId(){
         List<Product> products = findAllProducts();
         long max = 0;
         for (Product product : products){
@@ -130,4 +141,21 @@ public class ShopTxtRepository implements iShopRepository {
         }
         return max + 1;
     }
+
+    /*private int findLine(String toFind){
+        int count = 0;
+        try(Scanner reader = new Scanner(productFile)){
+            String text = "";
+            while(reader.hasNextLine()){
+                count++;
+                text = reader.nextLine();
+                if(text.contains(toFind)){
+                    return count;
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return count;
+    }*/
 }

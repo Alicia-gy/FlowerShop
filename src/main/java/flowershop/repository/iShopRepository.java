@@ -10,7 +10,7 @@ public interface iShopRepository {
     void insertTicket(Ticket ticket);
     void delete(Product product);
     List<Product> findAllProducts();
-    List<Ticket> findAllTickets();
+    List<String> findAllTickets();
     Product findById(long id);
     void update(Product product);
 }
