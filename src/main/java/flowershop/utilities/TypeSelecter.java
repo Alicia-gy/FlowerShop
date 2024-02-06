@@ -8,7 +8,7 @@ public class TypeSelecter {
 
     public static ProductType askProductType() {
         String input = InputScanner.askString(showProductTypeOptions());
-        return ProductType.valueOf(input.toLowerCase());
+        return ProductType.valueOf(input.toUpperCase());
     }
 
     public static Colours askColour(){
@@ -22,24 +22,24 @@ public class TypeSelecter {
     }
 
     static String showProductTypeOptions() {
-        return "Flower /n" +
-                "Decoration /n" +
+        return "Flower \n" +
+                "Decoration \n" +
                 "Tree";
     }
 
     static String showColourOptions() {
-        return "Yellow /n" +
-                "Pink /n" +
-                "Purple /n" +
-                "Blue /n" +
-                "Orange /n" +
-                "Green /n" +
-                "White /n" +
+        return "Yellow \n" +
+                "Pink \n" +
+                "Purple \n" +
+                "Blue \n" +
+                "Orange \n" +
+                "Green \n" +
+                "White \n" +
                 "Red";
     }
 
     static String showMaterialOptions() {
-        return "Plastic /n +" +
+        return "Plastic \n" +
                 "Wood";
     }
 }

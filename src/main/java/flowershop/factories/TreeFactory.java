@@ -13,7 +13,7 @@ public class TreeFactory implements ProductFactory {
         int quantity = InputScanner.askInt("Insert quantity of products");
         double height = InputScanner.askDouble("Insert product height");
 
-        Tree tree = new Tree(name, height, price, quantity);
+        Tree tree = new Tree(name, price, quantity, height);
         return tree;
     }
 }

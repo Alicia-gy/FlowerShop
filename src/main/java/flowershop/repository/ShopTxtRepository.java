@@ -7,10 +7,7 @@ import flowershop.service.impl.Serialize;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static flowershop.service.impl.Serialize.deserialize;
 import static flowershop.service.impl.Serialize.deserializeTicket;
@@ -26,11 +23,14 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public void insert(Product product) {
+        if (product.getId() == 0){
+            product.setId((int) calculateNextId());
+        }
         //Abro en modo append (añado al final sin sobreescribnir)
-        //No necesito cerrar porque lo hace el try (try with resources)
+        //no necesito cerrar porque lo hace el try (try with resources)
         file.getParentFile().mkdirs();
         try (FileWriter writer = new FileWriter(file, true)) {
-            writer.append(Serialize.serialize(product));
+            writer.append(product.serialize());
             writer.append("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -62,10 +62,16 @@ public class ShopTxtRepository implements iShopRepository {
 
     @Override
     public List<Product> findAllProducts() {
+        if (!file.exists()){
+            return Collections.emptyList();
+        }
         List<Product> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
             while(reader.hasNextLine()){
-                products.add(deserialize(reader.nextLine()));
+                Product product = deserialize(reader.nextLine());
+                if (product != null){
+                    products.add(product);
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,8 +82,12 @@ public class ShopTxtRepository implements iShopRepository {
     public List<Ticket> findAllTickets() {
         List<Ticket> products = new ArrayList<>();
         try(Scanner reader = new Scanner(file)){
+            String text = "";
             while(reader.hasNextLine()){
-                products.add(deserializeTicket(reader.nextLine()));
+                text = reader.nextLine();
+                if(text.contains("TICKET")){
+                    products.add(deserializeTicket(text));
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,5 +118,16 @@ public class ShopTxtRepository implements iShopRepository {
             Product anotherProd = it.next();
             insert(anotherProd.getId() == product.getId() ? product : anotherProd);
         }
+    }
+
+    private long calculateNextId(){
+        List<Product> products = findAllProducts();
+        long max = 0;
+        for (Product product : products){
+            if (max < product.getId()){
+                max = product.getId();
+            }
+        }
+        return max + 1;
     }
 }
