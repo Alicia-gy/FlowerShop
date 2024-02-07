@@ -7,7 +7,6 @@ public class FactorySelecter {
 
     public static Product createProductWithFactory(ProductType productType) {
         ProductFactory factory = null;
-        //try {
             switch (productType) {
                 case ProductType.TREE:
                     factory = new TreeFactory();
@@ -23,11 +22,6 @@ public class FactorySelecter {
                     break;
             }
             return factory.createProduct();
-
-        //} catch (Exception ignored) {
-
-        //}
-        //return null;
     }
 }
 

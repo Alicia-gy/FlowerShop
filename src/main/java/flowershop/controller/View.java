@@ -4,7 +4,7 @@ import flowershop.utilities.InputScanner;
 
 public class View {
 
-    private ShopController shopController;
+    private final ShopController shopController;
 
     public View(ShopController shopController) {
         this.shopController = shopController;

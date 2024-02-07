@@ -69,12 +69,14 @@ public class ShopController {
         ticket.setId(calculateNextTicketId());
         List<Product> products = shopRepository.findAllProducts();
         Scanner scanner = new Scanner(System.in);
-        Boolean breaker = true;
+
+        boolean breaker = true;
         while (breaker) {
             System.out.println("Select the number of the item wanted: ");
             for (int i = 0; i < products.size(); i++) {
                 System.out.println(i + 1 + "- " + products.get(i).toString());
             }
+
             Product product = products.get(scanner.nextInt()-1);
             scanner.nextLine();
             System.out.println("Select quantity of same product: ");
@@ -84,35 +86,16 @@ public class ShopController {
             System.out.println("If want to add more items, press \"Y\", anything else to continue: ");
             breaker = scanner.nextLine().toUpperCase().equals("Y");
         }
+
         shopRepository.insertTicket(ticket);
         ticket.getTickets().keySet().forEach(shopRepository::update);
     }
 
-    /*public void showTickets() {
-        List<Ticket> tickets = shopRepository.findAllTickets();
-
-        String toShow = tickets.stream()
-                .map(Ticket::toString)
-                .collect(Collectors.joining("\n"));
-
-        System.out.println(toShow);
-    }*/
     public void showTickets(){
         for (String text : shopRepository.findAllTickets()){
             System.out.println(text);
         }
     }
-
-    /*public double getTotalTicketValue() {
-        List<Ticket> tickets = shopRepository.findAllTickets();
-        double totalValue = 0;
-
-        for(Ticket ticket:tickets){
-            totalValue += ticket.getTotalPrice();
-        }
-
-        return totalValue;
-    }*/
 
     public double getTotalTicketValue(){
         double totalValue = 0;

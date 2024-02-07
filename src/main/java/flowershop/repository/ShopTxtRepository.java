@@ -2,14 +2,14 @@ package flowershop.repository;
 
 import flowershop.domain.Product;
 import flowershop.domain.Ticket;
-import flowershop.service.impl.Serialize;
+import flowershop.utilities.Serialize;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-import static flowershop.service.impl.Serialize.deserialize;
+import static flowershop.utilities.Serialize.deserialize;
 
 public class ShopTxtRepository implements iShopRepository {
 
@@ -79,31 +79,19 @@ public class ShopTxtRepository implements iShopRepository {
         return products;
     }
 
-    /*public List<Ticket> findAllTickets() {
-        List<Ticket> products = new ArrayList<>();
-        try(Scanner reader = new Scanner(file)){
-            String text = "";
-            while(reader.hasNextLine()){
-                text = reader.nextLine();
-                if(text.contains("TICKET")){
-                    products.add(deserializeTicket(text));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return products;
-    }*/
     public List<String> findAllTickets(){
-        List<String> tickets = new ArrayList<>();
-        try(Scanner reader = new Scanner(ticketFile)){
-            while(reader.hasNextLine()){
-                tickets.add(reader.nextLine());
+        if(ticketFile.exists()) {
+            List<String> tickets = new ArrayList<>();
+            try(Scanner reader = new Scanner(ticketFile)){
+                while(reader.hasNextLine()){
+                    tickets.add(reader.nextLine());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            return tickets;
         }
-        return tickets;
+        return Collections.emptyList();
     }
 
     @Override
@@ -142,20 +130,4 @@ public class ShopTxtRepository implements iShopRepository {
         return max + 1;
     }
 
-    /*private int findLine(String toFind){
-        int count = 0;
-        try(Scanner reader = new Scanner(productFile)){
-            String text = "";
-            while(reader.hasNextLine()){
-                count++;
-                text = reader.nextLine();
-                if(text.contains(toFind)){
-                    return count;
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return count;
-    }*/
 }
