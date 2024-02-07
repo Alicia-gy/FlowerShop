@@ -4,10 +4,9 @@ import flowershop.enums.Materials;
 
 public class Decoration extends Product {
 	private Materials material;
-	
-	public Decoration(String name,double price,int amount,Materials material) {
-		super(name,price,amount);
-		
+
+	public Decoration(String name, double price, int amount, Materials material) {
+		super(name, price, amount);
 		this.material = material;
 	}
 
@@ -32,6 +31,10 @@ public class Decoration extends Product {
 		+ ", amount=" + super.getAmount() +  ", Id: " + super.getId() + "]";
 	}
 
+	@Override
+	public String serialize() {
+		return "DECORATION\0" + this.getId() + '\0' + this.getName() + '\0' + this.getPrice() + '\0' +
+				this.getAmount() + '\0' + this.getMaterial();
+	}
 
-	//TODO add serializable
 }
