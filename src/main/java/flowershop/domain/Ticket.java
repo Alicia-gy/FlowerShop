@@ -9,24 +9,16 @@ public class Ticket {
 	private int id;
 	private double totalPrice;
 	private int totalProducts;
-	private Date saleDate;
+	private final Date saleDate;
 	private HashMap<Product, Integer> tickets;
 
 	public Ticket() {
 
-		this.tickets = new HashMap<Product, Integer>();
+		this.tickets = new HashMap<>();
 		this.saleDate= new GregorianCalendar().getTime();
 		this.totalPrice = 0;
 		this.totalProducts = 0;
 		this.id = 0;
-	}
-
-	public Ticket(int id, double totalPrice, int totalProducts, Date saleDate, HashMap<Product, Integer> tickets){
-		this.id = id;
-		this.totalPrice = totalPrice;
-		this.totalProducts = totalProducts;
-		this.saleDate = saleDate;
-		this.tickets = tickets;
 	}
 
 	public int getId() {
@@ -67,6 +59,7 @@ public class Ticket {
 			this.totalProducts += cantidad;
 			this.totalPrice += p.getPrice() * cantidad;
 			p.setAmount(p.getAmount() - cantidad);
+
 		} else {
 			this.tickets.put(p, p.getAmount());
 			this.totalProducts += p.getAmount();

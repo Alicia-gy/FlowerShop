@@ -17,7 +17,7 @@ public class DecorationFactory implements ProductFactory {
         double price = 0;
         int quantity = 0;
         Materials material = Materials.WOOD;
-        Boolean exit = true;
+        boolean exit = true;
 
         while (exit) {
             try {
